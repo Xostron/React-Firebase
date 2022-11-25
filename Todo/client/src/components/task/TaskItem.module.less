@@ -1,0 +1,22 @@
+@import '../../style/color.less';
+@import '../../style/layout.less';
+
+.container {
+    display: flex;
+    height: 5rem;
+    border: 1px solid @navbar-icon-color;
+    border-radius: .4rem;
+    align-items: center;
+    justify-content: space-between;
+
+    .left {
+        .display-flex-column;
+        margin-left: .5rem;
+        row-gap: .3rem
+    }
+
+    .right {
+        .display-flex-row;
+        margin-right: .5rem;
+    }
+}
