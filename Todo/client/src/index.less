@@ -1,24 +1,5 @@
-@icon-color: #00a8f7;
-@base-text-color: #232323;
-@regular-text-color: #525252;
-@hide-text-color: #B7BAC1;
-@border-color: #DDE3EE;
-
-@normal-color: #37ad4b;
-@alarm-color: #e03c30;
-@warning-color: rgb(255, 196, 0);
-
-@active-text-color: rgb(226, 226, 226);
-
-@test: #256ce1;
-@navbar-icon-color: #007bb4;
-
-.regular-family {
-  color: @regular-text-color;
-  font-size: 18px;
-  font-family: 'roboto';
-}
-
+@import './style/color.less';
+@import './style/layout.less';
 
 html {
   font-size: 18px;
@@ -64,9 +45,7 @@ main {
   margin: 0 auto;
 }
 
-Link {
-  color: #DDE3EE;
-}
+
 
 /***************VIEW ROUTES TABLET*****************/
 @media screen and (max-width:1050px) {
@@ -109,6 +88,6 @@ body::-webkit-scrollbar-thumb {
   /* закругления плашки */
   border-radius: 10px;
   /* цвет плашки */
-  background: linear-gradient(180deg, #afafaf, #555555);
+  background: linear-gradient(180deg, @hide-text-color, @navbar-icon-color);
   /* border: 3px solid orange; */
 }
