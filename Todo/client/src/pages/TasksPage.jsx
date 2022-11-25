@@ -26,8 +26,8 @@ const tasksMock = [
 export const TasksPage = () => {
 
     // ********************************PROPS********************************
-    // функция, которая возвращает набор кнопок для одной задачи objNameTask
-    const setBtnsTask = (nameTask) => {
+    // функция, которая возвращает массив кнопок для одной задачи objNameTask
+    const fooArrBtns = (nameTask) => {
         return ([
             {
                 icon: iDel,
@@ -38,39 +38,39 @@ export const TasksPage = () => {
             },])
     }
 
-    // callback для map: формирует props 
-    const itemsFunc = (item, idx) => {
+    // callback для map: модифицируем массив с данными в массив props компонетов
+    const callbackArrItems = (item, idx) => {
         return ({
             id: item.id || idx,
             title: item.title,
             date_create: item.date_create,
             date_finish: item.date_finish,
             handlerOpen: () => { console.log('open ', item.title) },
-            tools: setBtnsTask(item.title),
+            tools: fooArrBtns(item.title),
         })
+    }
+    const tasks = tasksMock.map(callbackArrItems)
+
+    // callback map для children TaskItem
+    const callbackRenderChildren = (btn, idx) => {
+        return (
+            <BtnIcon key={idx} icon={btn.icon} handler={btn.handler} />
+        )
     }
 
     // callback map для компонента ListCol
-    const renderItem = (task, idx) => {
+    const callbackRenderTask = (task, idx) => {
         return (
             <TaskItem key={idx} item={task}>
-                {task.tools.map((btn, idx) => {
-                    return (
-                        <BtnIcon key={idx} icon={btn.icon} handler={btn.handler} />
-                    )
-                })}
+                {task.tools.map(callbackRenderChildren)}
             </TaskItem>)
     }
-
-    // получаем массив задач: данные с сервера + handler
-    const tasks = tasksMock.map(itemsFunc)
-
 
     return (
         <div>
             <ListCol
                 item={tasks}
-                renderItem={renderItem}
+                renderItem={callbackRenderTask}
             />
         </div>
     )
