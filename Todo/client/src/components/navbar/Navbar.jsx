@@ -15,7 +15,7 @@ export const Navbar = () => {
         <div className={style.container}>
             <div className={style.left}>
                 <h2>Xostron</h2>
-                {links.map(link => <LinkIcon item={link} />)}
+                {links.map((link, idx) => <LinkIcon key={idx} item={link} />)}
             </div>
 
             <div className={style.right}>
