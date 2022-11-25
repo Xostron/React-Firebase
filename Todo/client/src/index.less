@@ -1,13 +1,114 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@icon-color: #00a8f7;
+@base-text-color: #232323;
+@regular-text-color: #525252;
+@hide-text-color: #B7BAC1;
+@border-color: #DDE3EE;
+
+@normal-color: #37ad4b;
+@alarm-color: #e03c30;
+@warning-color: rgb(255, 196, 0);
+
+@active-text-color: rgb(226, 226, 226);
+
+@test: #256ce1;
+@navbar-icon-color: #007bb4;
+
+.regular-family {
+  color: @regular-text-color;
+  font-size: 18px;
+  font-family: 'roboto';
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+
+html {
+  font-size: 18px;
+  font-family: 'roboto';
+  min-width: 343px;
+  box-sizing: border-box;
+  color: @regular-text-color;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+
+/************ очистка стилей браузера по-умолчанию ***********/
+* {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* MOBILE - убрать горизонтальный скролл */
+html,
+body {
+  overflow-x: hidden;
+  max-height: 100vh;
+}
+
+body {
+  position: relative;
+  overflow-y: scroll;
+}
+
+/**************VIEW ROUTES DESKTOP****************/
+main {
+  padding-top: 10px;
+  max-width: 85vw;
+  margin: 0 auto;
+}
+
+Link {
+  color: #DDE3EE;
+}
+
+/***************VIEW ROUTES TABLET*****************/
+@media screen and (max-width:1050px) {
+  main {
+    max-width: 90vw;
+  }
+
+  html {
+    font-size: 17px;
+  }
+}
+
+/***************VIEW ROUTES MOBILE*****************/
+@media screen and (max-width:579.98px) {
+  main {
+    max-width: 96vw;
+  }
+
+  html {
+    font-size: 16px;
+  }
+}
+
+
+/***************** CUSTOM SCROLL ***********************/
+/* ширина scrollbar */
+body::-webkit-scrollbar {
+  width: .3rem;
+
+}
+
+/* цвет дорожки */
+body::-webkit-scrollbar-track {
+  -webkit-box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset;
+  /* background-color: #f9f9fd; */
+  border-radius: 0px;
+}
+
+body::-webkit-scrollbar-thumb {
+  /* закругления плашки */
+  border-radius: 10px;
+  /* цвет плашки */
+  background: linear-gradient(180deg, #afafaf, #555555);
+  /* border: 3px solid orange; */
 }
