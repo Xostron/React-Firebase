@@ -1,8 +1,11 @@
 import React from "react"
+import { useNavigate } from 'react-router-dom'
 import { TaskItem } from "../components/task/TaskItem"
 import { ListCol } from "../components/UI/list/list-column/ListCol"
 import iDel from '../source/icons/bx-trash-alt.svg'
 import { BtnIcon } from '../components/UI/button/btn-icon/BtnIcon'
+import { useEffect } from "react"
+import { useState } from "react"
 
 
 const tasksMock = [
@@ -25,6 +28,16 @@ const tasksMock = [
 
 export const TasksPage = () => {
 
+    const history = useNavigate()
+    const [tasks, setTasks] = useState([])
+
+    // ******************************HANDLERS*******************************
+    const handlerOpenTask = (idObj) => {
+        let task = tasksMock.filter((val, id) => id === idObj)[0]
+        console.log('task = ', task)
+        history(`/tasks/${idObj}`, { state: task })
+    }
+
     // ********************************PROPS********************************
     // функция, которая возвращает массив кнопок для одной задачи objNameTask
     const fooArrBtns = (nameTask) => {
@@ -45,11 +58,13 @@ export const TasksPage = () => {
             title: item.title,
             date_create: item.date_create,
             date_finish: item.date_finish,
-            handlerOpen: () => { console.log('open ', item.title) },
+            handlerOpen: () => {
+                handlerOpenTask(idx)
+                console.log('open ', item.title)
+            },
             tools: fooArrBtns(item.title),
         })
     }
-    const tasks = tasksMock.map(callbackArrItems)
 
     // callback map для children TaskItem
     const callbackRenderChildren = (btn, idx) => {
@@ -65,6 +80,11 @@ export const TasksPage = () => {
                 {task.tools.map(callbackRenderChildren)}
             </TaskItem>)
     }
+
+
+    useEffect(() => {
+        setTasks(tasksMock.map(callbackArrItems))
+    }, [])
 
     return (
         <div>
