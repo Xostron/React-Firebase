@@ -7,12 +7,14 @@ import { Title } from "../title/Title";
 import { BtnIcon } from "../UI/button/btn-icon/BtnIcon";
 import { InputText } from "../UI/input/input-text/InputText";
 import { InputTodo } from "../UI/input/input-text-todo/InputTodo";
-
 import iLogo from '../../source/icons/bx-heart.svg'
 import iHandler from '../../source/icons/bx-trash-alt.svg'
 import { TodoItem } from "../todo/TodoItem";
-
-
+import { ListCol } from '../UI/list/list-column/ListCol'
+import { MyTextarea } from "../UI/input/areatext/MyTextarea";
+import { InputDate } from "../UI/input/input-date/InputDate";
+import iClock from '../../source/icons/bxs-watch.svg'
+import { InputFile } from "../UI/input/input-file/InputFile";
 export const DetailTaskItem = () => {
     const propsTodoTitle = {
         icon: null,
@@ -21,6 +23,18 @@ export const DetailTaskItem = () => {
         text: 'Список задач:'
     }
 
+    const propsInputFile = {
+        icon: iFile,
+        name: 'Файлы:'
+    }
+    const propsInputDateBegin = {
+        icon: iClock,
+        placeholder: 'Начало'
+    }
+    const propsInputDateFinish = {
+        // icon: iClock,
+        placeholder: 'Окончание'
+    }
     const propsInputTodo = {
         name: 'todo',
         placeholder: 'Добавить элемент...',
@@ -30,38 +44,51 @@ export const DetailTaskItem = () => {
         // value: 1234,
         autoFocus: false,
     }
+    const propsTextarea = {
+        name: 'todo',
+        placeholder: '...',
+        changeHandler: () => { },
+        // value: 1234,
 
-    const propsTodoItem = {
-        propsInput: {
-            name: 'todo',
-            placeholder: 'Добавить элемент...',
-            iHandler: iHandler,
-            btnHandler: () => { console.log('delete todo item') },
-            changeHandler: () => { },
-            // value: 1234,
-            autoFocus: false,
-            checked: false
-        },
-        propsCheck: {
-            handler: () => { },
-            checked: false
-        }
     }
+    const propsTodoItem = [
+        {
+            propsInput: {
+                name: 'todo',
+                placeholder: 'Добавить элемент...',
+                iHandler: iHandler,
+                btnHandler: () => { console.log('delete todo item') },
+                changeHandler: () => { },
+                // value: 1234,
+                autoFocus: false,
+                checked: false
+            },
+            propsCheck: {
+                handler: () => { },
+                checked: false
+            }
+        },
+    ]
+
     return (
         <div className={style.container}>
 
             <span className={style.description}>
                 Описание:
+                <MyTextarea props={propsTextarea} />
             </span>
 
             <span className={style.file}>
                 <BtnIcon icon={iFile} handler={() => { }} width={20} height={20}>
                     Файлы:
                 </BtnIcon>
+                <InputFile props={propsInputFile} />
             </span>
 
             <div className={style.time}>
-                Time
+                <InputDate props={propsInputDateBegin} />
+                <hr />
+                <InputDate props={propsInputDateFinish} />
             </div>
 
             <div className={style.todo}>
@@ -69,13 +96,10 @@ export const DetailTaskItem = () => {
                 <Title props={propsTodoTitle}>
                     <BtnIcon icon={iAdd} handler={() => { }} />
                 </Title>
-
-                <TodoItem props={propsTodoItem} />
-                <TodoItem props={propsTodoItem} />
-                <TodoItem props={propsTodoItem} />
-                <TodoItem props={propsTodoItem} />
-                <TodoItem props={propsTodoItem} />
-
+                <ListCol
+                    item={propsTodoItem}
+                    renderItem={(val, idx) => { return (<TodoItem key={idx} props={val} />) }}
+                />
                 <InputText props={propsInputTodo} />
 
             </div>
