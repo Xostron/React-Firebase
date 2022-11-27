@@ -6,7 +6,9 @@ import iDel from '../source/icons/bx-trash-alt.svg'
 import { BtnIcon } from '../components/UI/button/btn-icon/BtnIcon'
 import { useEffect } from "react"
 import { useState } from "react"
-
+// import icon1 from '../source/icons/'
+import iAdd from '../source/icons/bx-plus.svg'
+import { Title } from "../components/title/Title"
 
 const tasksMock = [
     { id: 1, title: 'task1', date_create: '25.11.22', date_finish: '29.11.22' },
@@ -26,6 +28,8 @@ const tasksMock = [
     { id: 15, title: 'task15', date_create: '25.11.22', date_finish: '29.11.22' },
 ]
 
+
+
 export const TasksPage = () => {
 
     const history = useNavigate()
@@ -39,6 +43,12 @@ export const TasksPage = () => {
     }
 
     // ********************************PROPS********************************
+    const titleProps = {
+        icon1: null,
+        handler1: () => { },
+        title: 'Мои задачи',
+        text: ''
+    }
     // функция, которая возвращает массив кнопок для одной задачи objNameTask
     const fooArrBtns = (nameTask) => {
         return ([
@@ -88,6 +98,9 @@ export const TasksPage = () => {
 
     return (
         <div>
+            <Title props={titleProps}>
+                <BtnIcon icon={iAdd} handler={() => { }} />
+            </Title>
             <ListCol
                 item={tasks}
                 renderItem={callbackRenderTask}
