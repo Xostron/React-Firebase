@@ -1,7 +1,7 @@
 import React from "react";
 import { BtnIcon } from "../UI/button/btn-icon/BtnIcon";
 import style from './TaskItem.module.less'
-import iDel from '../../source/icons/bx-trash-alt.svg'
+
 
 export const TaskItem = ({ item, children }) => {
     const {

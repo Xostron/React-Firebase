@@ -2,10 +2,18 @@
 @import '../../../../style/layout.less';
 
 .container {
+    cursor: pointer;
 
     .icon {
-        width: 24px;
-        height: 24px;
-        fill: @navbar-icon-color;
+        width: 1.4rem;
+        height: 1.4rem;
+        fill: @regular-text-color;
+        transition: fill .2s ease-in-out;
+    }
+
+    &:hover {
+        .icon {
+            fill: @navbar-icon-color;
+        }
     }
 }
