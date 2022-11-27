@@ -6,6 +6,7 @@ import iBack from '../source/icons/bx-x.svg'
 import iSave from '../source/icons/bx-check.svg'
 import iDel from '../source/icons/bx-trash-alt.svg'
 import iFile from '../source/icons/bx-file.svg'
+import { DetailTaskItem } from "../components/detail-task/DetailTaskItem.jsx"
 
 export const DetailTaskPage = () => {
     const { state } = useLocation()
@@ -19,6 +20,7 @@ export const DetailTaskPage = () => {
         text: ''
     }
     const isFocus = false
+
     return (
         <div>
             <Title props={titleProps}>
@@ -29,14 +31,12 @@ export const DetailTaskPage = () => {
                         </>
                         :
                         <>
-                            <BtnIcon icon={iFile} handler={() => { }} />
                             <BtnIcon icon={iDel} handler={() => { }} />
                         </>
                 }
             </Title>
-            Task {id}
-            TaskList {state.id}
-            Title: {state.title}
+            <hr />
+            <DetailTaskItem />
         </div>
     )
 }
