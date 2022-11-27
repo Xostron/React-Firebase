@@ -23,11 +23,10 @@ export const Title = ({ children, props }) => {
                         null
                 }
 
-
-                <strong>
-                    {title}
+                <div>
+                    <strong>{title}</strong>
                     <span className={style.text_span}>{text}</span>
-                </strong>
+                </div>
 
             </div>
 
