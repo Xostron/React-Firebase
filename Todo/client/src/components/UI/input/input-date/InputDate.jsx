@@ -2,23 +2,39 @@ import React from "react";
 import style from './InputDate.module.less'
 import { HandySvg } from "handy-svg";
 
+
 export const InputDate = ({ props }) => {
     const {
         icon,
         placeholder,
+        value,
+        handler
     } = props
+
     return (
         <div className={style.container}>
-            <div className={style.wrapper}>
-                {icon ?
-                    <HandySvg className={style.icon} src={icon} />
-                    :
-                    null
-                }
-                <span className={style.name}>{placeholder}...</span>
+
+            {icon ?
+                <HandySvg className={style.icon} src={icon} />
+                :
+                null
+            }
+            {value ?
                 <span className={style.name}>{placeholder}:</span>
-                <input id="datetime" type="datetime-local" />
-            </div>
+                :
+                <span className={style.name}>{placeholder}...</span>
+
+
+            }
+
+            <input
+                className={style.datetime}
+                type="datetime-local"
+                onChange={handler}
+
+            />
+
+
         </div>
     )
 }

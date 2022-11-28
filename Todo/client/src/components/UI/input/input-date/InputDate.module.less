@@ -1,2 +1,34 @@
 @import '../../../../style/color.less';
 @import '../../../../style/layout.less';
+
+.container {
+    .display-flex-row;
+    margin: 0;
+
+    .name {}
+
+    .icon {
+        width: 1.4rem;
+        height: 1.4rem;
+        fill: @regular-text-color;
+    }
+
+    .datetime {
+        padding: 0.25rem;
+        outline: none;
+        border: 0px solid @hide-text-color;
+        border-radius: .5rem;
+        color: @regular-text-color;
+        .regular-family;
+        font-size: .85rem;
+
+
+        &::placeholder {
+            font-size: .85rem;
+            color: @hide-text-color;
+        }
+
+
+    }
+
+}
