@@ -3,16 +3,29 @@
 
 .container {
     .display-flex-column;
+    row-gap: .5rem;
 
     .description {
-        padding: .5rem 0;
+        padding-top: .5rem;
         .display-flex-column;
         row-gap: .5rem;
     }
 
     .file {
         display: flex;
-        gap: 1rem;
+    }
+
+    .time {
+        .display-flex-column;
+        row-gap: .25rem;
+
+        hr {
+            border-color: @hide-text-color;
+        }
+
+        .time2 {
+            padding-left: 2.4rem;
+        }
     }
 
     .icon {
@@ -21,7 +34,12 @@
         fill: @regular-text-color;
     }
 
-    .time {}
 
-    .todo {}
+    .todo {
+        .display-flex-column;
+
+        .todo2 {
+            margin-left: 1.75rem;
+        }
+    }
 }

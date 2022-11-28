@@ -35,14 +35,11 @@ export const DetailTaskItem = () => {
         // icon: iClock,
         placeholder: 'Окончание'
     }
-    const propsInputTodo = {
+    const propsAreaTodo = {
         name: 'todo',
         placeholder: 'Добавить элемент...',
-        iHandler: iHandler,
-        btnHandler: () => { console.log('delete todo item') },
         changeHandler: () => { },
         // value: 1234,
-        autoFocus: false,
     }
     const propsTextarea = {
         name: 'todo',
@@ -66,6 +63,13 @@ export const DetailTaskItem = () => {
             propsCheck: {
                 handler: () => { },
                 checked: false
+            },
+            propsTextarea: {
+                name: 'todo',
+                placeholder: '...',
+                changeHandler: () => { },
+                // value: 1234,
+
             }
         },
     ]
@@ -79,16 +83,16 @@ export const DetailTaskItem = () => {
             </span>
 
             <span className={style.file}>
-                <BtnIcon icon={iFile} handler={() => { }} width={20} height={20}>
-                    Файлы:
-                </BtnIcon>
                 <InputFile props={propsInputFile} />
             </span>
 
             <div className={style.time}>
                 <InputDate props={propsInputDateBegin} />
                 <hr />
-                <InputDate props={propsInputDateFinish} />
+                <div className={style.time2}>
+                    <InputDate props={propsInputDateFinish} />
+                </div>
+
             </div>
 
             <div className={style.todo}>
@@ -96,11 +100,16 @@ export const DetailTaskItem = () => {
                 <Title props={propsTodoTitle}>
                     <BtnIcon icon={iAdd} handler={() => { }} />
                 </Title>
+
                 <ListCol
                     item={propsTodoItem}
                     renderItem={(val, idx) => { return (<TodoItem key={idx} props={val} />) }}
                 />
-                <InputText props={propsInputTodo} />
+
+                <div className={style.todo2}>
+                    <MyTextarea props={propsAreaTodo} />
+                </div>
+
 
             </div>
         </div>
