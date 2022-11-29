@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { LinkIcon } from "../UI/link/link-icon/LinkIcon";
 import { BtnText } from "../UI/button/btn-text/BtnText";
 import style from './Navbar.module.less'
@@ -7,7 +7,7 @@ import { firebaseContext } from "../..";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+
 
 export const Navbar = () => {
     const history = useNavigate()

@@ -3,15 +3,9 @@ import ReactDOMClient from 'react-dom/client';
 import App from './App';
 import './index.less';
 import { initializeApp } from "firebase/app";
-import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    onAuthStateChanged
-} from "firebase/auth"
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
-
-
+import { getAuth } from "firebase/auth"
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import 'firebase/firestore'
 
 
 export const firebaseContext = createContext()
@@ -28,7 +22,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app)
-const firestore = getFirestore(app)
+const db = getFirestore(app);
 
 
 
@@ -36,7 +30,7 @@ const container = document.getElementById('root')
 const root = ReactDOMClient.createRoot(container)
 root.render(
     <firebaseContext.Provider
-        value={{ auth, firestore }}
+        value={{ auth, db }}
     >
         <App />
     </firebaseContext.Provider>

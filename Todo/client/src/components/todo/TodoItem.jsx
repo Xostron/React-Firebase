@@ -14,8 +14,6 @@ export const TodoItem = ({ props }) => {
     return (
         <div className={style.container}>
             <div className={style.left}>
-
-
                 {
                     propsCheck ?
                         <MyCheckbox props={propsCheck} />

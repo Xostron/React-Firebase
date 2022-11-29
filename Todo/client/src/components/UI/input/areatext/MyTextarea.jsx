@@ -16,6 +16,7 @@ export const MyTextarea = ({ props }) => {
         type,
         iHandler,
         btnHandler,
+        blurHandlerTextarea
     } = props
 
     // статус - зачеркнутый текст
@@ -34,6 +35,7 @@ export const MyTextarea = ({ props }) => {
     }
     const blurHandler = (e) => {
         setFocus(false)
+        blurHandlerTextarea(idx)
         e.stopPropagation()
     }
 
@@ -53,7 +55,7 @@ export const MyTextarea = ({ props }) => {
         else if (ref.current.scrollHeight < val) {
             ref.current.style.height = `${ref.current.scrollHeight - 20}px`;
         }
-        console.log('testarea= ', ref.current.scrollHeight, ref.current.style.height)
+        // console.log('testarea= ', ref.current.scrollHeight, ref.current.style.height)
     }
 
     // onChange - событие для обработки текста

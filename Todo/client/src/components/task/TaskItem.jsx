@@ -9,7 +9,8 @@ export const TaskItem = ({ item, children }) => {
         idx,
         task,
         handlerOpen,
-        changeHandlerTitle
+        changeHandlerTitle,
+        saveHandler
     } = item
 
     const propsTextarea = {
@@ -18,6 +19,7 @@ export const TaskItem = ({ item, children }) => {
         placeholder: '...',
         changeHandler: changeHandlerTitle,
         value: task.title,
+        blurHandlerTextarea: saveHandler
     }
 
     return (

@@ -14,7 +14,12 @@ import iAdd from '../../source/icons/bx-plus.svg'
 import style from './DetailTaskItem.module.less'
 import iBack from '../../source/icons/bx-x.svg'
 
-export const DetailTaskItem = () => {
+export const DetailTaskItem = ({ item }) => {
+    const {
+        task
+    } = item
+
+    // title
     const propsAreaTitle = {
         icon: iBack,
         handler: () => { },
@@ -29,6 +34,7 @@ export const DetailTaskItem = () => {
             type: false,
         }
     }
+    // 
     const propsTodoTitle = {
         icon: null,
         handler1: () => { },
@@ -58,8 +64,6 @@ export const DetailTaskItem = () => {
         handler: () => { },
         checked: true
     }
-
-
 
     const propsAreaTodo = {
         name: 'todo',
