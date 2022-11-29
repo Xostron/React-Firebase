@@ -33,12 +33,12 @@ export const TasksPage = () => {
 
     const getTasks = async () => {
         const querySnapshot = await getDocs(collection(db, "tasks"));
-        const arr = []
+
         querySnapshot.forEach((doc) => {
-            console.log(`руд ${doc.id} => ${doc.data()}`);
-            arr.push(doc.data())
+            // console.log(`руд ${doc.id} => ${doc.data()}`);
+            setTasks((prev) => [...prev, doc.data()])
         });
-        setTasks(arr)
+
     }
 
     const saveTask = async (idx) => {
