@@ -1,20 +1,32 @@
 import React from "react";
-import { InputTodo } from "../UI/input/input-text-todo/InputTodo";
+import { BtnIcon } from "../UI/button/btn-icon/BtnIcon";
 import { MyCheckbox } from '../UI/check/MyCheckbox'
-import style from './TodoItem.module.less'
-import iHandler from '../../source/icons/bx-trash-alt.svg'
 import { MyTextarea } from "../UI/input/areatext/MyTextarea";
+import style from './TodoItem.module.less'
+
 export const TodoItem = ({ props }) => {
     const {
-        propsInput,
+        icon,
+        handler,
         propsCheck,
         propsTextarea
     } = props
     return (
         <div className={style.container}>
-            <MyCheckbox props={propsCheck} />
-            {/* <InputTodo props={propsInput} /> */}
-            <MyTextarea props={propsTextarea} />
+            <div className={style.left}>
+
+
+                {
+                    propsCheck ?
+                        <MyCheckbox props={propsCheck} />
+                        :
+                        <BtnIcon icon={icon} handler={handler} />
+                }
+            </div>
+            <div className={style.right}>
+                <MyTextarea props={propsTextarea} />
+            </div>
+
         </div>
     )
 }

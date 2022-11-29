@@ -1,6 +1,7 @@
 import React from 'react'
 import { HandySvg } from 'handy-svg'
 import style from './Title.module.less'
+import { MyTextarea } from '../UI/input/areatext/MyTextarea'
 
 
 export const Title = ({ children, props }) => {
@@ -8,8 +9,10 @@ export const Title = ({ children, props }) => {
         icon1,
         handler1,
         title,
-        text
+        text,
+        propsTextarea
     } = props
+
     return (
         <div className={style.title}>
             <div className={style.left}>
@@ -23,10 +26,14 @@ export const Title = ({ children, props }) => {
                         null
                 }
 
-                <div>
-                    <strong>{title}</strong>
-                    <span className={style.text_span}>{text}</span>
-                </div>
+
+
+
+                <strong>{title}</strong>
+
+
+                <span className={style.text_span}>{text}</span>
+
 
             </div>
 
