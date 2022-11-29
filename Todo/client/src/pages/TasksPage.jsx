@@ -30,6 +30,9 @@ export const TasksPage = () => {
 
     // ****************************API firebase*****************************
 
+    const updTasks = async () => {
+
+    }
 
     const getTasks = async () => {
         const querySnapshot = await getDocs(collection(db, "tasks"));

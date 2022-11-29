@@ -42,11 +42,11 @@ export const MyTextarea = ({ props }) => {
     // autosize - авторастягивание при заполнении/обратно
     const ref = useRef()
     // const [rows, setRows] = useState(0)
-    const autosize = (e) => {
+    const autosize = () => {
         let str = ref.current.style.height.match(/[0-9]/g) || []
         let val = Number(str.join(''))
 
-        if (e.target.value === '') {
+        if (ref.current.value === '') {
             ref.current.style.height = '38px'
         }
         else if (ref.current.scrollHeight > val) {
@@ -87,7 +87,11 @@ export const MyTextarea = ({ props }) => {
 
     // init начальную высоту areatext
     useEffect(() => {
-        ref.current.style.height = '39px'
+        autosize()
+        if (ref.current.scrollHeight === 59) { ref.current.style.height = '39px' }
+        // ref.current.style.height = '39px'
+        // ref.current.style.height = `${ref.current.scrollHeight}px`
+        console.log('test = ', ref.current.style.height, ref.current.scrollHeight)
     }, [])
 
     // 
