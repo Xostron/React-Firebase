@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import style from './MyTextarea.module.less'
 import { HandySvg } from 'handy-svg'
 
@@ -6,6 +6,7 @@ import { HandySvg } from 'handy-svg'
 export const MyTextarea = ({ props }) => {
     const styleArea = [style.myTextarea]
     const {
+        idx,
         name,
         placeholder,
         changeHandler,
@@ -36,46 +37,60 @@ export const MyTextarea = ({ props }) => {
         e.stopPropagation()
     }
 
-    // autosize
+    // autosize - авторастягивание при заполнении/обратно
     const ref = useRef()
-    const [rows, setRows] = useState(0)
+    // const [rows, setRows] = useState(0)
+    const autosize = (e) => {
+        let str = ref.current.style.height.match(/[0-9]/g) || []
+        let val = Number(str.join(''))
+
+        if (e.target.value === '') {
+            ref.current.style.height = '38px'
+        }
+        else if (ref.current.scrollHeight > val) {
+            ref.current.style.height = `${ref.current.scrollHeight}px`
+        }
+        else if (ref.current.scrollHeight < val) {
+            ref.current.style.height = `${ref.current.scrollHeight - 20}px`;
+        }
+        console.log('testarea= ', ref.current.scrollHeight, ref.current.style.height)
+    }
 
     // onChange - событие для обработки текста
     const handler = (e) => {
-
         // props handler
-        changeHandler()
+        changeHandler(e, idx)
         // высота содержимого areatext
-        console.log('onchange', ref.current.scrollHeight, ref.current.scrollTop)
-        setRows(ref.current.scrollHeight)
+        // setRows(ref.current.scrollHeight)
+        autosize(e)
     }
+
     // autosize
-    useEffect(() => {
-        let str = ref.current.style.height.match(/[0-9]/g) || []
-        let val = Number(str.join(''))
-        // console.log('testarea= ', ref.current.scrollHeight, val)
-        if (ref.current.scrollHeight > val) {
-            ref.current.style.height = `${ref.current.scrollHeight}px`;
-            // console.log('if = ', val, rows)
-        }
-        else if (val === (ref.current.scrollHeight + 1)) {
-            if (ref.current.value === '') {
-                ref.current.style.height = '39px'
-            }
-            else {
-                ref.current.style.height = `${ref.current.scrollHeight - 20}px`;
-                // console.log('else = ', ref.current.scrollHeight, rows)
-            }
-        }
-    }, [rows])
+    // useLayoutEffect(() => {
+    //     let str = ref.current.style.height.match(/[0-9]/g) || []
+    //     let val = Number(str.join(''))
+
+    //     if (ref.current.value === '') {
+    //         ref.current.style.height = '38px'
+    //         setRows(ref.current.scrollHeight)
+    //     }
+    //     else if (rows > val) {
+    //         ref.current.style.height = `${rows}px`
+    //     }
+    //     else if (rows < val) {
+    //         ref.current.style.height = `${rows - 20}px`;
+    //     }
+    //     console.log('testarea= ', ref.current.scrollHeight, ref.current.style.height, rows)
+    // }, [rows])
 
     // init начальную высоту areatext
     useEffect(() => {
         ref.current.style.height = '39px'
     }, [])
 
+    // 
     return (
-        <div className={style.container}>
+        <div className={style.container} onClick={(e) => { e.stopPropagation() }}>
             <textarea
                 className={styleArea.join(' ')}
                 type="text"

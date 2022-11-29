@@ -9,39 +9,75 @@ import { useState } from "react"
 // import icon1 from '../source/icons/'
 import iAdd from '../source/icons/bx-plus.svg'
 import { Title } from "../components/title/Title"
-// import { use } from 'react-firebase-hooks'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { useContext } from "react"
+import { firebaseContext } from ".."
+
 const tasksMock = [
-    { id: 1, title: 'task1', date_create: '25.11.22', date_finish: '29.11.22' },
-    { id: 2, title: 'task2', date_create: '25.11.22', date_finish: '29.11.22' },
-    { id: 3, title: 'task3', date_create: '25.11.22', date_finish: '29.11.22' },
-    { id: 4, title: 'task4', date_create: '25.11.22', date_finish: '29.11.22' },
-    { id: 5, title: 'task5', date_create: '25.11.22', date_finish: '29.11.22' },
-    { id: 6, title: 'task6', date_create: '25.11.22', date_finish: '29.11.22' },
-    { id: 7, title: 'task7', date_create: '25.11.22', date_finish: '29.11.22' },
-    { id: 8, title: 'task8', date_create: '25.11.22', date_finish: '29.11.22' },
-    { id: 9, title: 'task9', date_create: '25.11.22', date_finish: '29.11.22' },
-    { id: 10, title: 'task10', date_create: '25.11.22', date_finish: '29.11.22' },
-    { id: 11, title: 'task11', date_create: '25.11.22', date_finish: '29.11.22' },
-    { id: 12, title: 'task12', date_create: '25.11.22', date_finish: '29.11.22' },
-    { id: 13, title: 'task13', date_create: '25.11.22', date_finish: '29.11.22' },
-    { id: 14, title: 'task14', date_create: '25.11.22', date_finish: '29.11.22' },
-    { id: 15, title: 'task15', date_create: '25.11.22', date_finish: '29.11.22' },
+    { id: 1, title: 'task1', date_begin: '25.11.22', date_finish: '29.11.22' },
+    { id: 2, title: 'task2', date_begin: '25.11.22', date_finish: '29.11.22' },
+    { id: 3, title: 'task3', date_begin: '25.11.22', date_finish: '29.11.22' },
+    { id: 4, title: 'task4', date_begin: '25.11.22', date_finish: '29.11.22' },
+    { id: 5, title: 'task5', date_begin: '25.11.22', date_finish: '29.11.22' },
+    { id: 6, title: 'task6', date_begin: '25.11.22', date_finish: '29.11.22' },
+    { id: 7, title: 'task7', date_begin: '25.11.22', date_finish: '29.11.22' },
+    { id: 8, title: 'task8', date_begin: '25.11.22', date_finish: '29.11.22' },
+    { id: 9, title: 'task9', date_begin: '25.11.22', date_finish: '29.11.22' },
+    { id: 10, title: 'task10', date_begin: '25.11.22', date_finish: '29.11.22' },
+    { id: 11, title: 'task11', date_begin: '25.11.22', date_finish: '29.11.22' },
+    { id: 12, title: 'task12', date_begin: '25.11.22', date_finish: '29.11.22' },
+    { id: 13, title: 'task13', date_begin: '25.11.22', date_finish: '29.11.22' },
+    { id: 14, title: 'task14', date_begin: '25.11.22', date_finish: '29.11.22' },
+    { id: 15, title: 'task15', date_begin: '25.11.22', date_finish: '29.11.22' },
 ]
 
 
 
 export const TasksPage = () => {
-
     const history = useNavigate()
-    const [tasks, setTasks] = useState([])
 
+    const { auth } = useContext(firebaseContext)
+    const [user, loading, error] = useAuthState(auth)
+    //данные из БД
+    const [tasks, setTasks] = useState(tasksMock)
+    // модифицированные tasks
+    const [propsTasks, setPropsTasks] = useState([])
+
+    // ****************************API firebase*****************************
+    const getTasks = async () => {
+
+    }
+
+    const saveTask = async () => {
+
+    }
     // ******************************HANDLERS*******************************
-    const handlerOpenTask = (idObj) => {
-        let task = tasksMock.filter((val, id) => id === idObj)[0]
+    const openTaskHandler = (idObj) => {
+        let task = tasks.filter((val, id) => id === idObj)[0]
         console.log('task = ', task)
         history(`/tasks/${idObj}`, { state: task })
     }
-
+    const addTaskHandler = () => {
+        const item = {
+            id: null,
+            title: '',
+            info: '',
+            date_begin: '',
+            date_finish: ''
+        }
+        setTasks(() => {
+            let arr = Object.values(tasks)
+            arr.unshift(item)
+            console.log('DICT = ', arr)
+            return (arr)
+        })
+    }
+    const changeHandler = (e, idList) => {
+        setTasks(tasks.map((val, idx) =>
+            idx === idList ? { ...val, title: e.target.value } : val
+        ))
+        // console.log('changeHandlerTitle =', idList, e.target.value)
+    }
     // ********************************PROPS********************************
     const titleProps = {
         icon1: null,
@@ -55,27 +91,21 @@ export const TasksPage = () => {
             {
                 icon: iDel,
                 handler: (e) => {
-                    console.log('del ', nameTask)
+                    console.log('del ', nameTask, e)
                     e.stopPropagation()
                 }
             },])
     }
-
-    // callback для map: модифицируем массив с данными в массив props компонетов
-    const callbackArrItems = (item, idx) => {
+    // callback для map: модифицируем массив с данными в массив props ListCol
+    const callbackPropsTasks = (task, idx) => {
         return ({
-            id: item.id || idx,
-            title: item.title,
-            date_create: item.date_create,
-            date_finish: item.date_finish,
-            handlerOpen: () => {
-                handlerOpenTask(idx)
-                console.log('open ', item.title)
-            },
-            tools: fooArrBtns(item.title),
+            idx,
+            task,
+            handlerOpen: openTaskHandler,
+            changeHandlerTitle: changeHandler,
+            tools: fooArrBtns(task.title),
         })
     }
-
     // callback map для children TaskItem
     const callbackRenderChildren = (btn, idx) => {
         return (
@@ -83,28 +113,37 @@ export const TasksPage = () => {
         )
     }
 
-    // callback map для компонента ListCol
-    const callbackRenderTask = (task, idx) => {
-        return (
-            <TaskItem key={idx} item={task}>
-                {task.tools.map(callbackRenderChildren)}
-            </TaskItem>)
-    }
-
-
+    // *******************************EFFECT*******************************
+    // обновление пропсов для LictCol
     useEffect(() => {
-        setTasks(tasksMock.map(callbackArrItems))
+        setPropsTasks(tasks.map(callbackPropsTasks))
+    }, [tasks])
+
+    // API запрос данных при загрузке страницы
+    useEffect(() => {
+
     }, [])
 
+    // *******************************DEBUG*******************************
+    // console.log('propsTasks = ', propsTasks)
     return (
         <div>
+
             <Title props={titleProps}>
-                <BtnIcon icon={iAdd} handler={() => { }} />
+                <BtnIcon icon={iAdd} handler={addTaskHandler} />
             </Title>
+
             <ListCol
-                item={tasks}
-                renderItem={callbackRenderTask}
+                item={propsTasks}
+                renderItem={(task, idx) => {
+                    return (
+                        <TaskItem key={idx} item={task}>
+                            {task.tools.map(callbackRenderChildren)}
+                        </TaskItem>
+                    )
+                }}
             />
+
         </div>
     )
 }

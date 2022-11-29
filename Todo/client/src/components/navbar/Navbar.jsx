@@ -20,6 +20,7 @@ export const Navbar = () => {
     // firebase
     const { auth } = useContext(firebaseContext)
     const [user, loading, error] = useAuthState(auth)
+
     // HANDLERS
     const loginHandler = async () => {
         const provider = new GoogleAuthProvider()
@@ -28,15 +29,16 @@ export const Navbar = () => {
     const logoutHandler = async () => {
         const logout = await signOut(auth)
     }
+
     // переход на страницы при авторизации/выход 
-    useEffect(() => {
-        if (user) {
-            history('/tasks')
-        }
-        else {
-            history('/about')
-        }
-    }, [user])
+    // useEffect(() => {
+    //     if (user) {
+    //         history('/tasks')
+    //     }
+    //     else {
+    //         history('/about')
+    //     }
+    // }, [user])
 
     return (
         <div className={style.container}>
