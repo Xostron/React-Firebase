@@ -9,7 +9,7 @@ import { useState } from "react"
 // import icon1 from '../source/icons/'
 import iAdd from '../source/icons/bx-plus.svg'
 import { Title } from "../components/title/Title"
-
+// import { use } from 'react-firebase-hooks'
 const tasksMock = [
     { id: 1, title: 'task1', date_create: '25.11.22', date_finish: '29.11.22' },
     { id: 2, title: 'task2', date_create: '25.11.22', date_finish: '29.11.22' },

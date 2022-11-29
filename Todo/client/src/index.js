@@ -11,6 +11,9 @@ import {
 } from "firebase/auth"
 import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 
+
+
+
 export const firebaseContext = createContext()
 
 const firebaseConfig = {
@@ -26,6 +29,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app)
 const firestore = getFirestore(app)
+
 
 
 const container = document.getElementById('root')

@@ -19,7 +19,7 @@ export const LoginPage = () => {
         const isUser = auth.currentUser
         console.log('test logout = ', logout, isUser)
     }
-    // console.log(isUser)
+
     return (
         <div>
 

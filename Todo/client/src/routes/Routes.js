@@ -4,11 +4,17 @@ import { DetailTaskPage } from "../pages/DetailTaskPage";
 import { LoginPage } from "../pages/LoginPages";
 import { TasksPage } from "../pages/TasksPage";
 
-export const MyRoutes = [
+export const PublicRoutes = [
     { path: '/tasks', element: <TasksPage /> },
     { path: '/tasks/:id', element: <DetailTaskPage /> },
-    { path: '/login', element: <LoginPage /> },
     { path: '/about', element: <AboutPage /> },
-    { path: '*', element: <Navigate replace to='/login' /> }
+    { path: '*', element: <Navigate replace to='/tasks' /> }
 ]
 
+export const PrivateRoutes = [
+    // { path: '/tasks', element: <TasksPage /> },
+    // { path: '/tasks/:id', element: <DetailTaskPage /> },
+    // { path: '/login', element: <LoginPage /> },
+    { path: '/about', element: <AboutPage /> },
+    { path: '*', element: <Navigate replace to='/about' /> }
+]
