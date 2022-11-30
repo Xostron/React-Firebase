@@ -91,7 +91,7 @@ export const MyTextarea = ({ props }) => {
         if (ref.current.scrollHeight === 59) { ref.current.style.height = '39px' }
         // ref.current.style.height = '39px'
         // ref.current.style.height = `${ref.current.scrollHeight}px`
-        console.log('test = ', ref.current.style.height, ref.current.scrollHeight)
+        // console.log('test = ', ref.current.style.height, ref.current.scrollHeight)
     }, [])
 
     // 
@@ -114,7 +114,7 @@ export const MyTextarea = ({ props }) => {
                 <HandySvg
                     className={style.iconEnd}
                     src={iHandler}
-                    onClick={btnHandler}
+                    onClick={() => btnHandler(idx)}
                 />}
         </div>
     )

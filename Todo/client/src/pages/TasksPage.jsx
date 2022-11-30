@@ -9,11 +9,7 @@ import { useContext } from "react"
 import { firebaseContext } from ".."
 import iDel from '../source/icons/bx-trash-alt.svg'
 import iAdd from '../source/icons/bx-plus.svg'
-import { collection, addDoc, getDocs } from "firebase/firestore";
-
-
-
-
+import { collection, addDoc, getDocs, serverTimestamp, orderBy, query, updateDoc, doc, deleteDoc } from "firebase/firestore";
 
 
 
@@ -29,36 +25,81 @@ export const TasksPage = () => {
 
 
     // ****************************API firebase*****************************
+    // удалить задачу
+    const delTask = async (idx) => {
+        console.log('delete api = ', idx)
+        let arr = tasks
+        if (tasks[idx].id) {
+            await deleteDoc(doc(db, "tasks", tasks[idx].id));
 
-    const updTasks = async () => {
+            arr.splice(idx, 1)
+            setTasks([...arr])
+        }
+        else {
+
+            arr.splice(idx, 1)
+            setTasks([...arr])
+        }
 
     }
-
+    // обновить задачу
+    const updTask = async (idx) => {
+        // let updData = tasks[idx]
+        console.log('upd = ', tasks[idx])
+        const DocRef = doc(db, "tasks", tasks[idx].id);
+        await updateDoc(DocRef, {
+            "title": tasks[idx].title,
+            "info": tasks[idx].info,
+            "dateBegin": tasks[idx].dateBegin,
+            "dateFinish": tasks[idx].dateFinish,
+            "createAT": serverTimestamp()
+        });
+    }
+    // прочитать все задачи
     const getTasks = async () => {
-        const querySnapshot = await getDocs(collection(db, "tasks"));
+        const q = query(collection(db, "tasks"), orderBy("createAT", "desc"))
+        const querySnapshot = await getDocs(q)
+        // const q = query(collection(db, "cities"), where("capital", "==", true));
 
+        console.log('query', q)
         querySnapshot.forEach((doc) => {
             // console.log(`руд ${doc.id} => ${doc.data()}`);
-            setTasks((prev) => [...prev, doc.data()])
+            let data = { ...doc.data(), id: doc.id }
+            // console.log("data = ", data)
+            setTasks((prev) => [...prev, data])
         });
 
     }
-
+    // создать одну задачу
     const saveTask = async (idx) => {
-        console.log('saveTask = ', tasks[idx])
+        // console.log('saveTask = ', tasks[idx])
         try {
             const docRef = await addDoc(collection(db, "tasks"), {
                 uid: user.uid,
                 title: tasks[idx].title,
                 info: tasks[idx].info,
-                dateBegin: tasks[idx].date_begin,
-                dateFinish: tasks[idx].date_finish
+                dateBegin: tasks[idx].dateBegin,
+                dateFinish: tasks[idx].dateFinish,
+                createAT: serverTimestamp()
             });
             console.log("Document written with ID: ", docRef.id);
+            // присваиваем id задаче для последующих операци обновления
+            setTasks(tasks.map((val, index) => index === idx ? { ...val, id: docRef.id } : val))
         } catch (e) {
             console.error("Error adding document: ", e);
         }
+        // console.log('save = ', saveId)
 
+    }
+
+    const saveOrUpdTask = async (idx) => {
+        console.log('saveOrUpd = ', tasks[idx].id, tasks[idx])
+        if (tasks[idx].id === '') {
+            saveTask(idx)
+        }
+        else {
+            updTask(idx)
+        }
     }
     // ******************************HANDLERS*******************************
     const openTaskHandler = (idObj) => {
@@ -68,11 +109,11 @@ export const TasksPage = () => {
     }
     const addTaskHandler = () => {
         const item = {
-            id: null,
+            id: '',
             title: '',
             info: '',
-            date_begin: '',
-            date_finish: ''
+            dateBegin: '',
+            dateFinish: ''
         }
         setTasks(() => {
             let arr = Object.values(tasks)
@@ -95,12 +136,12 @@ export const TasksPage = () => {
         text: ''
     }
     // функция, которая возвращает массив кнопок для одной задачи objNameTask
-    const fooArrBtns = (nameTask) => {
+    const fooArrBtns = (idx) => {
         return ([
             {
                 icon: iDel,
                 handler: (e) => {
-                    console.log('del ', nameTask, e)
+                    delTask(idx)
                     e.stopPropagation()
                 }
             },])
@@ -112,8 +153,9 @@ export const TasksPage = () => {
             task,
             handlerOpen: openTaskHandler,
             changeHandlerTitle: changeHandler,
-            saveHandler: saveTask,
-            tools: fooArrBtns(task.title),
+            saveHandler: saveOrUpdTask,
+
+            tools: fooArrBtns(idx),
         })
     }
     // callback map для children TaskItem
@@ -127,6 +169,7 @@ export const TasksPage = () => {
     // обновление пропсов для ListCol
     useEffect(() => {
         tasks && setPropsTasks(tasks.map(callbackPropsTasks))
+        // console.log('tasks=', tasks)
     }, [tasks])
 
     // API запрос данных при загрузке страницы
