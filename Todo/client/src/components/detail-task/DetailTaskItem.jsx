@@ -8,7 +8,7 @@ import { MyTextarea } from "../UI/input/areatext/MyTextarea";
 import { InputDate } from "../UI/input/input-date/InputDate";
 import { MyCheckbox } from "../UI/check/MyCheckbox";
 import iClock from '../../source/icons/bxs-watch.svg'
-import iHandler from '../../source/icons/bx-trash-alt.svg'
+import iDel from '../../source/icons/bx-trash-alt.svg'
 import iFile from '../../source/icons/bx-file.svg'
 import iAdd from '../../source/icons/bx-plus.svg'
 import style from './DetailTaskItem.module.less'
@@ -16,54 +16,72 @@ import iBack from '../../source/icons/bx-x.svg'
 
 export const DetailTaskItem = ({ item }) => {
     const {
-        task
+        task,
+        propsTitle,
+        propsInfo,
+        propsDateBegin,
+        propsDateFinish,
+        propsFinishCheck,
     } = item
 
     // title
     const propsAreaTitle = {
         icon: iBack,
-        handler: () => { },
+        handler: propsTitle.handler,
         propsTextarea: {
-            name: 'todo',
+            name: 'title',
             placeholder: '...',
-            changeHandler: () => { },
-            // value: 'task1',
-            autoFocus: false,
-            iHandler: iHandler,
-            btnHandler: () => { console.log('delete todo item') },
-            type: false,
+            iHandler: iDel,
+            btnHandler: propsTitle.propsTextarea.btnHandler,
+            changeHandler: propsTitle.propsTextarea.changeHandler,
+            value: propsTitle.propsTextarea.value,
+            blurHandlerTextarea: propsTitle.propsTextarea.blurHandlerTextarea
         }
     }
-    // 
+    //info 
+    const propsTextareaInfo = {
+        name: 'info',
+        placeholder: '...',
+        changeHandler: propsInfo.changeHandler,
+        value: propsInfo.value,
+        blurHandlerTextarea: propsInfo.blurHandlerTextarea
+    }
+    // DateBegin
+    const propsInputDateBegin = {
+        icon: iClock,
+        placeholder: 'Начало',
+        name: 'dateBegin',
+        value: propsDateBegin.value,
+        changeHandler: propsDateBegin.changeHandler,
+        blurHandler: propsDateBegin.blurHandler
+    }
+    // DateFinish
+    const propsInputDateFinish = {
+        placeholder: 'Окончание',
+        name: 'dateFinish',
+        value: propsDateFinish.value,
+        changeHandler: propsDateFinish.changeHandler,
+        blurHandler: propsDateFinish.blurHandler
+    }
+    // DateFinishCheck
+    const propsDateFinishCheck = {
+        handler: () => { },
+        checked: true
+    }
+
     const propsTodoTitle = {
         icon: null,
         handler1: () => { },
         title: '',
         text: 'Список задач:'
     }
-    const propsTextarea = {
-        name: 'todo',
-        placeholder: '...',
-        changeHandler: () => { },
-        type: false
-    }
+
     const propsInputFile = {
         icon: iFile,
         name: 'Файлы:'
     }
 
-    const propsInputDateBegin = {
-        icon: iClock,
-        placeholder: 'Начало'
-    }
 
-    const propsInputDateFinish = {
-        placeholder: 'Окончание'
-    }
-    const propsDateFinishCheck = {
-        handler: () => { },
-        checked: true
-    }
 
     const propsAreaTodo = {
         name: 'todo',
@@ -82,7 +100,7 @@ export const DetailTaskItem = ({ item }) => {
                 placeholder: '...',
                 changeHandler: () => { },
                 autoFocus: false,
-                iHandler: iHandler,
+                iHandler: iDel,
                 btnHandler: () => { console.log('delete todo item') },
                 checked: false,
                 type: true
@@ -97,7 +115,7 @@ export const DetailTaskItem = ({ item }) => {
             <hr />
             <div className={style.description}>
                 Описание:
-                <MyTextarea props={propsTextarea} />
+                <MyTextarea props={propsTextareaInfo} />
             </div>
             <hr />
             <span className={style.file}>

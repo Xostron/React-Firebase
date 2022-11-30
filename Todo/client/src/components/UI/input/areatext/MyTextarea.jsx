@@ -34,8 +34,9 @@ export const MyTextarea = ({ props }) => {
         e.stopPropagation()
     }
     const blurHandler = (e) => {
-        setFocus(false)
         blurHandlerTextarea(idx)
+        console.log('blur', idx)
+        setTimeout(() => setFocus(false), 500)
         e.stopPropagation()
     }
 
@@ -60,38 +61,20 @@ export const MyTextarea = ({ props }) => {
 
     // onChange - событие для обработки текста
     const handler = (e) => {
-        // props handler
         changeHandler(e, idx)
-        // высота содержимого areatext
-        // setRows(ref.current.scrollHeight)
         autosize(e)
     }
-
-    // autosize
-    // useLayoutEffect(() => {
-    //     let str = ref.current.style.height.match(/[0-9]/g) || []
-    //     let val = Number(str.join(''))
-
-    //     if (ref.current.value === '') {
-    //         ref.current.style.height = '38px'
-    //         setRows(ref.current.scrollHeight)
-    //     }
-    //     else if (rows > val) {
-    //         ref.current.style.height = `${rows}px`
-    //     }
-    //     else if (rows < val) {
-    //         ref.current.style.height = `${rows - 20}px`;
-    //     }
-    //     console.log('testarea= ', ref.current.scrollHeight, ref.current.style.height, rows)
-    // }, [rows])
+    const onClickBtnHandler = (e) => {
+        btnHandler(idx)
+        console.log('test')
+        e.stopPropagation()
+    }
 
     // init начальную высоту areatext
     useEffect(() => {
         autosize()
         if (ref.current.scrollHeight === 59) { ref.current.style.height = '39px' }
-        // ref.current.style.height = '39px'
-        // ref.current.style.height = `${ref.current.scrollHeight}px`
-        // console.log('test = ', ref.current.style.height, ref.current.scrollHeight)
+
     }, [])
 
     // 
@@ -114,7 +97,7 @@ export const MyTextarea = ({ props }) => {
                 <HandySvg
                     className={style.iconEnd}
                     src={iHandler}
-                    onClick={() => btnHandler(idx)}
+                    onClick={onClickBtnHandler}
                 />}
         </div>
     )

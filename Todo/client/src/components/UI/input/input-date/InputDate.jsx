@@ -5,10 +5,13 @@ import { HandySvg } from "handy-svg";
 
 export const InputDate = ({ props }) => {
     const {
+        idx,
         icon,
+        name,
         placeholder,
         value,
-        handler
+        changeHandler,
+        blurHandler
     } = props
 
     return (
@@ -28,10 +31,14 @@ export const InputDate = ({ props }) => {
             }
 
             <input
+                name={name}
+                value={value}
                 className={style.datetime}
                 type="datetime-local"
-                onChange={handler}
-
+                onChange={(e) => changeHandler(e)}
+                onBlur={(e) => {
+                    blurHandler(idx)
+                }}
             />
 
 
