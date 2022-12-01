@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import { Title } from "../title/Title";
 import { BtnIcon } from "../UI/button/btn-icon/BtnIcon";
 import { InputFile } from "../UI/input/input-file/InputFile";
@@ -14,6 +15,7 @@ import iAdd from '../../source/icons/bx-plus.svg'
 import style from './DetailTaskItem.module.less'
 import iBack from '../../source/icons/bx-x.svg'
 
+
 export const DetailTaskItem = ({ item }) => {
     const {
         task,
@@ -22,7 +24,12 @@ export const DetailTaskItem = ({ item }) => {
         propsDateBegin,
         propsDateFinish,
         propsFinishCheck,
+        propsTitleTodos,
+        propsTodosItem,
+        propsAddTodo
     } = item
+
+    const [propsTodos, setPropsTodos] = useState([])
 
     // title
     const propsAreaTitle = {
@@ -53,7 +60,8 @@ export const DetailTaskItem = ({ item }) => {
         name: 'dateBegin',
         value: propsDateBegin.value,
         changeHandler: propsDateBegin.changeHandler,
-        blurHandler: propsDateBegin.blurHandler
+        blurHandler: propsDateBegin.blurHandler,
+        checked: task.checked
     }
     // DateFinish
     const propsInputDateFinish = {
@@ -65,48 +73,59 @@ export const DetailTaskItem = ({ item }) => {
     }
     // DateFinishCheck
     const propsDateFinishCheck = {
-        handler: () => { },
-        checked: true
+        handler: propsFinishCheck.handler,
+        checked: propsFinishCheck.checked,
+        updChecked: propsFinishCheck.updChecked
     }
-
-    const propsTodoTitle = {
-        icon: null,
-        handler1: () => { },
-        title: '',
-        text: 'Список задач:'
+    // Todo title
+    const propsTodosTitle = {
+        text: 'Список задач:',
+        childrenHandler: propsTitleTodos.handler
     }
-
+    // input File
     const propsInputFile = {
         icon: iFile,
         name: 'Файлы:'
     }
-
-
-
-    const propsAreaTodo = {
+    // Todo2
+    const propsTodo2 = {
         name: 'todo',
         placeholder: 'Добавить элемент...',
-        changeHandler: () => { },
-        type: false
+        changeHandler: propsAddTodo.changeHandler,
+        type: false,
+        blurHandlerTextarea: propsAddTodo.blurHandler
     }
-    const propsTodoItem = [
-        {
-            propsCheck: {
-                handler: () => { },
-                checked: true
-            },
-            propsTextarea: {
-                name: 'todo',
-                placeholder: '...',
-                changeHandler: () => { },
-                autoFocus: false,
-                iHandler: iDel,
-                btnHandler: () => { console.log('delete todo item') },
-                checked: false,
-                type: true
-            }
+
+    // callback для map todos
+    const callbackPropsTodos = (todo, idx) =>
+    ({
+        propsCheck: {
+            handler: propsTodosItem.checkboxHandler,
+            checked: todo.checked,
+            updChecked: propsTodosItem.updChecked,
+            idx: idx,
+            id: todo.id
         },
-    ]
+        propsTextarea: {
+            idx,
+            name: 'info',
+            placeholder: '...',
+            changeHandler: propsTodosItem.changeHandler,
+            autoFocus: false,
+            iHandler: iDel,
+            btnHandler: propsTodosItem.btnHandler,
+            type: true,
+            checked: todo.checked,
+            value: todo.info,
+            blurHandlerTextarea: propsTodosItem.blurHandler
+        }
+    })
+
+    // обновление propsTodosItem
+    useEffect(() => {
+        propsTodosItem.todos && setPropsTodos(propsTodosItem.todos.map(callbackPropsTodos))
+    }, [propsTodosItem.todos])
+
 
     return (
         <div className={style.container}>
@@ -133,17 +152,19 @@ export const DetailTaskItem = ({ item }) => {
 
             <div className={style.todo}>
 
-                <Title props={propsTodoTitle}>
-                    <BtnIcon icon={iAdd} handler={() => { }} />
+                <Title props={propsTodosTitle}>
+                    <BtnIcon
+                        icon={iAdd}
+                        handler={() => propsTodosTitle.childrenHandler()} />
                 </Title>
 
                 <ListCol
-                    item={propsTodoItem}
+                    item={propsTodos}
                     renderItem={(val, idx) => { return (<TodoItem key={idx} props={val} />) }}
                 />
 
                 <div className={style.todo2}>
-                    <MyTextarea props={propsAreaTodo} />
+                    <MyTextarea props={propsTodo2} />
                 </div>
 
             </div>

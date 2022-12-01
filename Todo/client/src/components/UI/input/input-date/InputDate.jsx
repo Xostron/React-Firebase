@@ -5,20 +5,23 @@ import { HandySvg } from "handy-svg";
 
 export const InputDate = ({ props }) => {
     const {
-        idx,
         icon,
         name,
         placeholder,
         value,
         changeHandler,
-        blurHandler
+        blurHandler,
+        checked
     } = props
-
+    const styleIcon = [style.icon]
+    if (checked) {
+        styleIcon.push(style.checked)
+    }
     return (
         <div className={style.container}>
 
             {icon ?
-                <HandySvg className={style.icon} src={icon} />
+                <HandySvg className={styleIcon.join(' ')} src={icon} />
                 :
                 null
             }
@@ -37,7 +40,7 @@ export const InputDate = ({ props }) => {
                 type="datetime-local"
                 onChange={(e) => changeHandler(e)}
                 onBlur={(e) => {
-                    blurHandler(idx)
+                    blurHandler()
                 }}
             />
 

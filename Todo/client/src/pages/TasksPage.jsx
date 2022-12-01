@@ -36,7 +36,6 @@ export const TasksPage = () => {
             setTasks([...arr])
         }
         else {
-
             arr.splice(idx, 1)
             setTasks([...arr])
         }
@@ -63,23 +62,22 @@ export const TasksPage = () => {
 
         console.log('query', q)
         querySnapshot.forEach((doc) => {
-            // console.log(`руд ${doc.id} => ${doc.data()}`);
             let data = { ...doc.data(), id: doc.id }
-            // console.log("data = ", data)
             setTasks((prev) => [...prev, data])
-        });
+        })
 
     }
     // создать одну задачу
     const saveTask = async (idx) => {
-        // console.log('saveTask = ', tasks[idx])
+        console.log('saveTask = ', tasks[idx])
         try {
             const docRef = await addDoc(collection(db, "tasks"), {
-                uid: user.uid,
+                uid: tasks[idx].uid,
                 title: tasks[idx].title,
                 info: tasks[idx].info,
                 dateBegin: tasks[idx].dateBegin,
                 dateFinish: tasks[idx].dateFinish,
+                checked: tasks[idx].checked,
                 createAT: serverTimestamp()
             });
             console.log("Document written with ID: ", docRef.id);
@@ -104,16 +102,17 @@ export const TasksPage = () => {
     // ******************************HANDLERS*******************************
     const openTaskHandler = (idObj) => {
         let task = tasks.filter((val, id) => id === idObj)[0]
-        // console.log('task = ', task)
-        history(`/tasks/${idObj}`, { state: task })
+        history(`/tasks/${task.id}`, { state: task })
     }
     const addTaskHandler = () => {
         const item = {
             id: '',
+            uid: user.uid,
             title: '',
             info: '',
             dateBegin: '',
-            dateFinish: ''
+            dateFinish: '',
+            checked: false
         }
         setTasks(() => {
             let arr = Object.values(tasks)

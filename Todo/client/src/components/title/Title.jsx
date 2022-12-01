@@ -10,7 +10,7 @@ export const Title = ({ children, props }) => {
         handler1,
         title,
         text,
-        propsTextarea
+
     } = props
 
     return (

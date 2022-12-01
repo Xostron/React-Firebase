@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { HandySvg } from 'handy-svg'
 import style from './MyCheckbox.module.less'
 import iOk from '../../../source/icons/bx-check.svg'
@@ -6,7 +6,13 @@ import iOk from '../../../source/icons/bx-check.svg'
 
 export const MyCheckbox = ({ props }) => {
 
-    const { handler, checked } = props
+    const {
+        handler,
+        checked,
+        updChecked,
+        idx,
+        id
+    } = props
 
     // const [active, setActive] = useState(false)
 
@@ -15,18 +21,28 @@ export const MyCheckbox = ({ props }) => {
 
     const checkRef = useRef()
 
-    const handlerEvent = () => {
+
+
+    const handlerEvent = async (e) => {
         checkRef.current.click()
-        // setActive(!active)
-        handler()
-        // console.log('check = ', active)
+        let currentCheck = !checked
+        handler('checked', checked, idx, id)
+        updChecked(currentCheck, id)
     }
+
+
     return (
         <>
-            <div className={styleTContainer} onClick={handlerEvent}>
+            <div
+                className={styleTContainer}
+                onClick={handlerEvent}
+
+            >
                 <HandySvg
+
                     className={styleToggle}
                     src={iOk}
+
                 />
             </div>
 

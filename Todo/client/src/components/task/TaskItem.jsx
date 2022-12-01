@@ -22,14 +22,18 @@ export const TaskItem = ({ item, children }) => {
         value: task.title,
         blurHandlerTextarea: saveHandler,
     }
-
+    console.log('TASK ITEM =', task)
     return (
         <div className={style.container} onClick={() => handlerOpen(idx)}>
 
             <div className={style.left}>
-                <MyTextarea props={propsTextarea} />
-                <span>{task.date_begin}</span>
-                <span>{task.date_finish}</span>
+                {task.id === '' ?
+                    <MyTextarea props={propsTextarea} />
+                    :
+                    <span>{task.title}</span>
+                }
+                <span>{task.dateBegin}</span>
+                <span>{task.dateFinish}</span>
             </div>
 
             <div className={style.right}>
