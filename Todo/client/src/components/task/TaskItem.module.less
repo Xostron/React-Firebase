@@ -25,5 +25,23 @@
         .display-flex-row;
         margin-right: .5rem;
         height: fit-content;
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            fill: @hide-text-color;
+
+            &.checked {
+                fill: @normal-color;
+            }
+
+            &.warning {
+                fill: @warning-color;
+            }
+
+            &.alarm {
+                fill: @alarm-color;
+            }
+        }
     }
 }

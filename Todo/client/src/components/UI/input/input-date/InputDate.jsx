@@ -11,17 +11,37 @@ export const InputDate = ({ props }) => {
         value,
         changeHandler,
         blurHandler,
-        checked
+        checked,
+        propsSchedular
     } = props
-    const styleIcon = [style.icon]
-    if (checked) {
-        styleIcon.push(style.checked)
+
+    let styleIcon = style.icon
+
+    if (propsSchedular) {
+        // console.log('inputDate = ', propsSchedular)
+        // SCHEDULAR
+
+        switch (propsSchedular.state) {
+            case 'checked':
+                styleIcon = style.icon + ' ' + style.checked
+                break
+            case 'warning':
+                styleIcon = style.icon + ' ' + style.warning
+                break
+            case 'alarm':
+                styleIcon = style.icon + ' ' + style.alarm
+                break
+            default:
+                styleIcon = style.icon
+                break;
+        }
     }
+
     return (
         <div className={style.container}>
 
             {icon ?
-                <HandySvg className={styleIcon.join(' ')} src={icon} />
+                <HandySvg className={styleIcon} src={icon} />
                 :
                 null
             }
