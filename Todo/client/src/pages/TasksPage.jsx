@@ -176,6 +176,20 @@ export const TasksPage = () => {
         getTasks()
     }, [])
 
+    // ******************************SHEDULER******************************
+    const [shedulerTasks, setShedularTasks] = useState([])
+    const [current, setCurrent] = useState()
+
+    const callbackSheduler = () => {
+        console.log('current time=', new Date())
+        // setCurrent(prev => new Date)
+        // console.log('TIME = ', current)
+    }
+    useEffect(() => {
+        let id = setInterval(callbackSheduler, 1000)
+        return () => clearInterval(id)
+    }, [])
+
     // *******************************DEBUG*******************************
     // console.log('propsTasks = ', propsTasks)
     return (

@@ -30,7 +30,13 @@ export const DetailTaskItem = ({ item }) => {
     } = item
 
     const [propsTodos, setPropsTodos] = useState([])
-
+    // формирование сигнальных флагов DateInput
+    const flagDate = () => {
+        // let delta = task.DateBegin
+        console.log('FLAG DATE = ', Date.parse(new Date()), Date.parse(task.dateBegin), Date.parse(task.dateFinish))
+    }
+    // setInterval(flagDate, 1000)
+    // ********************************PROPS********************************
     // title
     const propsAreaTitle = {
         icon: iBack,

@@ -32,8 +32,8 @@ export const TaskItem = ({ item, children }) => {
                     :
                     <span>{task.title}</span>
                 }
-                <span>{task.dateBegin}</span>
-                <span>{task.dateFinish}</span>
+                {task.dateBegin && <span>{task.dateBegin}</span>}
+                {task.dateFinish && <span>{task.dateFinish}</span>}
             </div>
 
             <div className={style.right}>
