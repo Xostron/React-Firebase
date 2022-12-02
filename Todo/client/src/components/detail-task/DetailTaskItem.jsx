@@ -30,12 +30,8 @@ export const DetailTaskItem = ({ item }) => {
     } = item
 
     const [propsTodos, setPropsTodos] = useState([])
-    // формирование сигнальных флагов DateInput
-    const flagDate = () => {
-        // let delta = task.DateBegin
-        console.log('FLAG DATE = ', Date.parse(new Date()), Date.parse(task.dateBegin), Date.parse(task.dateFinish))
-    }
-    // setInterval(flagDate, 1000)
+
+
     // ********************************PROPS********************************
     // title
     const propsAreaTitle = {
@@ -67,7 +63,8 @@ export const DetailTaskItem = ({ item }) => {
         value: propsDateBegin.value,
         changeHandler: propsDateBegin.changeHandler,
         blurHandler: propsDateBegin.blurHandler,
-        checked: task.checked
+        checked: task.checked,
+        propsSchedular: propsDateBegin.schedularState
     }
     // DateFinish
     const propsInputDateFinish = {
@@ -132,7 +129,7 @@ export const DetailTaskItem = ({ item }) => {
         propsTodosItem.todos && setPropsTodos(propsTodosItem.todos.map(callbackPropsTodos))
     }, [propsTodosItem.todos])
 
-
+    // console.log('propsTaskItem = ', item)
     return (
         <div className={style.container}>
 

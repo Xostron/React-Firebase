@@ -6,17 +6,20 @@ import { DetailTaskItem } from "../components/detail-task/DetailTaskItem.jsx"
 import { useEffect, useState, useContext } from "react"
 import { collection, addDoc, getDocs, serverTimestamp, orderBy, getDoc, where, query, updateDoc, doc, deleteDoc } from "firebase/firestore";
 import { firebaseContext } from ".."
+import { useSchedular } from "../hooks/useSchedular"
+
 
 export const DetailTaskPage = () => {
     const { state } = useLocation()
     const { id } = useParams()
     const history = useNavigate()
-
+    const [schedularState, setSchedularState] = useState({ state: 'none' })
     const { db } = useContext(firebaseContext)
     const [task, setTask] = useState()
     const [todos, setTodos] = useState([])
-    console.log('task = ', task)
-
+    // console.log('task = ', task)
+    // INIT SHEDULER
+    const { currentTime } = useSchedular(callbackSchedular, 1000)
 
     useEffect(() => {
         getTask()
@@ -38,14 +41,14 @@ export const DetailTaskPage = () => {
     }
     // удалить задачу
     const deleteTask = async (idx) => {
-        console.log('delete task id = ', idx)
+        // console.log('delete task id = ', idx)
         //delete task api
         await deleteDoc(doc(db, "tasks", id))
         history('/tasks')
     }
     // обновить задачу
     const updTask = async () => {
-        console.log('upd = ', id)
+        // console.log('upd = ', id)
         const DocRef = doc(db, "tasks", id)
         await updateDoc(DocRef, {
             "title": task.title,
@@ -67,7 +70,7 @@ export const DetailTaskPage = () => {
 
     // создать Todo
     const saveTodo = async (idx) => {
-        console.log('save Todo = ', todos[idx])
+        // console.log('save Todo = ', todos[idx])
         try {
             const docRef = await addDoc(collection(db, "todos"), {
                 idTask: id,
@@ -85,12 +88,12 @@ export const DetailTaskPage = () => {
     }
     // прочитать Todo
     const getTodo = async () => {
-        const q = query(collection(db, "todos"), where('idTask', '==', id))
-        console.log('AOAOAOAOAOAOA ====== ', q)
+        const q = query(collection(db, "todos"), where('idTask', '==', id), orderBy("createAT", "desc"))
+        // console.log('AOAOAOAOAOAOA ====== ', q)
         const querySnapshot = await getDocs(q)
         // const q = query(collection(db, "cities"), where("capital", "==", true)); orderBy("createAT", "desc"),, where("idTask", "==", id)
         let arr = []
-        console.log('query', q)
+        // console.log('query', q)
         querySnapshot.forEach((doc) => {
             let data = { ...doc.data(), id: doc.id }
             arr.push(data)
@@ -99,7 +102,7 @@ export const DetailTaskPage = () => {
     }
     // удалить Todo
     const delTodo = async (idx) => {
-        console.log('delete api = ', idx)
+        // console.log('delete api = ', idx)
         let arr = todos
         if (todos[idx].id) {
             await deleteDoc(doc(db, "todos", todos[idx].id));
@@ -114,7 +117,7 @@ export const DetailTaskPage = () => {
     }
     // обновить Todo
     const updTodo = async (idx) => {
-        console.log('updTodo = ', todos[idx])
+        // console.log('updTodo = ', todos[idx])
         const DocRef = doc(db, "todos", todos[idx].id);
         await updateDoc(DocRef, {
             "idTask": id,
@@ -124,7 +127,7 @@ export const DetailTaskPage = () => {
         });
     }
     const saveOrUpdTodo = async (idx) => {
-        console.log('saveOrUpdTodo', idx, todos[idx].id)
+        // console.log('saveOrUpdTodo', idx, todos[idx].id)
         if (todos[idx].id === '') {
             saveTodo(idx)
         }
@@ -162,16 +165,16 @@ export const DetailTaskPage = () => {
     // ******************************HANDLERS*******************************
     // tasks
     const changeHandler = (e) => {
-        console.log('changeHandler = ', e.target.name)
+        // console.log('changeHandler = ', e.target.name)
         setTask({ ...task, [e.target.name]: e.target.value })
     }
     const changeBoolHandler = (name, bool) => {
-        console.log('changeHandler = ', name)
+        // console.log('changeHandler = ', name)
         setTask({ ...task, [name]: !bool })
     }
     // todos
     const addTodoTask = () => {
-        console.log('add task', id)
+        // console.log('add task', id)
         const item = {
             idTask: id,
             id: '',
@@ -186,18 +189,17 @@ export const DetailTaskPage = () => {
         })
     }
     const changeTodosChecked = (name, bool, idx, id) => {
-        console.log('checked todos', idx, bool, name, id, todos)
+        // console.log('checked todos', idx, bool, name, id, todos)
         setTodos(todos.map((todo, id) => id === idx ? { ...todo, [name]: !bool } : todo))
     }
     const changeHandlerTodos = (e, idx) => {
-        console.log('changeHandlerTodos = ', idx, e.target.name, e.target.value)
+        // console.log('changeHandlerTodos = ', idx, e.target.name, e.target.value)
         setTodos(todos.map((todo, id) => id === idx ? { ...todo, [e.target.name]: e.target.value } : todo))
     }
 
     // ********************************PROPS********************************
     const item = () => ({
         task: task,
-
         propsTitle: {
             handler: () => { history('/tasks') },
             propsTextarea: {
@@ -215,7 +217,8 @@ export const DetailTaskPage = () => {
         propsDateBegin: {
             value: task.dateBegin,
             changeHandler: changeHandler,
-            blurHandler: updTask
+            blurHandler: updTask,
+            schedularState: schedularState
         },
         propsDateFinish: {
             value: task.dateFinish,
@@ -243,6 +246,28 @@ export const DetailTaskPage = () => {
             blurHandler: saveAndGet
         }
     })
+    // ******************************SHEDULER******************************
+    function callbackSchedular() {
+        // console.log('========', currentTime)
+        let state = {}
+        if (task.checked) {
+            state = {
+                state: 'checked'
+            }
+        }
+        else if (Date.parse(task.dateFinish) > currentTime) {
+            state = {
+                state: 'warning'
+            }
+        }
+        else if (Date.parse(task.dateFinish) <= currentTime) {
+            state = {
+                state: 'alarm'
+            }
+        }
+        // console.log('STATE = ', state)
+        setSchedularState(state)
+    }
 
     return (
         <div style={{ height: 'auto' }}>

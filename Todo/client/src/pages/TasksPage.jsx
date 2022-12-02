@@ -9,8 +9,8 @@ import { useContext } from "react"
 import { firebaseContext } from ".."
 import iDel from '../source/icons/bx-trash-alt.svg'
 import iAdd from '../source/icons/bx-plus.svg'
-import { collection, addDoc, getDocs, serverTimestamp, orderBy, query, updateDoc, doc, deleteDoc } from "firebase/firestore";
-
+import { collection, addDoc, getDocs, serverTimestamp, orderBy, where, query, updateDoc, doc, deleteDoc } from "firebase/firestore";
+import { useSchedular } from "../hooks/useSchedular"
 
 
 
@@ -22,6 +22,9 @@ export const TasksPage = () => {
     const [tasks, setTasks] = useState([])
     // модифицированные tasks
     const [propsTasks, setPropsTasks] = useState([])
+    const [schedularState, setSchedularState] = useState([])
+    // INIT SHEDULER
+    const { currentTime } = useSchedular(callbackSchedular, 1000)
 
 
     // ****************************API firebase*****************************
@@ -56,7 +59,11 @@ export const TasksPage = () => {
     }
     // прочитать все задачи
     const getTasks = async () => {
-        const q = query(collection(db, "tasks"), orderBy("createAT", "desc"))
+
+
+        let q = query(collection(db, "tasks"), where("uid", "==", user.uid), orderBy('createAT', 'desc'))
+
+
         const querySnapshot = await getDocs(q)
         // const q = query(collection(db, "cities"), where("capital", "==", true));
 
@@ -153,7 +160,7 @@ export const TasksPage = () => {
             handlerOpen: openTaskHandler,
             changeHandlerTitle: changeHandler,
             saveHandler: saveOrUpdTask,
-
+            schedular: schedularState[idx],
             tools: fooArrBtns(idx),
         })
     }
@@ -169,7 +176,7 @@ export const TasksPage = () => {
     useEffect(() => {
         tasks && setPropsTasks(tasks.map(callbackPropsTasks))
         // console.log('tasks=', tasks)
-    }, [tasks])
+    }, [tasks, schedularState])
 
     // API запрос данных при загрузке страницы
     useEffect(() => {
@@ -177,18 +184,34 @@ export const TasksPage = () => {
     }, [])
 
     // ******************************SHEDULER******************************
-    const [shedulerTasks, setShedularTasks] = useState([])
-    const [current, setCurrent] = useState()
+    function callbackSchedular() {
+        // console.log('========', currentTime)
+        if (tasks) {
+            let arrTimeState = tasks.map((task, id) => {
+                if (task.checked) {
+                    return ({
+                        idTask: task.id,
+                        state: 'checked'
+                    })
+                }
+                else if (Date.parse(task.dateFinish) > currentTime) {
+                    return ({
+                        idTask: task.id,
+                        state: 'warning'
+                    })
+                }
+                else if (Date.parse(task.dateFinish) <= currentTime) {
+                    return ({
+                        idTask: task.id,
+                        state: 'alarm'
+                    })
+                }
+            })
 
-    const callbackSheduler = () => {
-        console.log('current time=', new Date())
-        // setCurrent(prev => new Date)
-        // console.log('TIME = ', current)
+            setSchedularState(arrTimeState)
+        }
     }
-    useEffect(() => {
-        let id = setInterval(callbackSheduler, 1000)
-        return () => clearInterval(id)
-    }, [])
+    // console.log('ARR time state = ', schedularState)
 
     // *******************************DEBUG*******************************
     // console.log('propsTasks = ', propsTasks)
