@@ -19,6 +19,7 @@ import iBack from '../../source/icons/bx-x.svg'
 export const DetailTaskItem = ({ item }) => {
     const {
         task,
+        files,
         propsTitle,
         propsInfo,
         propsDateBegin,
@@ -26,7 +27,7 @@ export const DetailTaskItem = ({ item }) => {
         propsFinishCheck,
         propsTitleTodos,
         propsTodosItem,
-        propsAddTodo
+        propsAddTodo,
     } = item
 
     const [propsTodos, setPropsTodos] = useState([])
@@ -88,7 +89,8 @@ export const DetailTaskItem = ({ item }) => {
     // input File
     const propsInputFile = {
         icon: iFile,
-        name: 'Файлы:'
+        name: 'Файлы:',
+        handler: files.uploadHandler
     }
     // Todo2
     const propsTodo2 = {
@@ -142,10 +144,24 @@ export const DetailTaskItem = ({ item }) => {
             <hr />
             <span className={style.file}>
                 <InputFile props={propsInputFile} />
+
             </span>
+            <div>
+                <ul>
+                    {files.items.map((val, idx) =>
+                        <li
+                            key={idx}
+                            onClick={(e) => files.downloadHandler(e, idx)}
+                        >
+                            <a>{val}</a>
+                        </li>
+                    )}
+                </ul>
+            </div>
             <hr />
             <div className={style.time}>
                 <InputDate props={propsInputDateBegin} />
+
                 <hr />
                 <div className={style.time2}>
                     <InputDate props={propsInputDateFinish} />

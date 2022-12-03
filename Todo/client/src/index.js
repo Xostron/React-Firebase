@@ -4,9 +4,9 @@ import App from './App';
 import './index.less';
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth"
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 import 'firebase/firestore'
-
+import { getStorage } from 'firebase/storage'
 
 export const firebaseContext = createContext()
 
@@ -23,14 +23,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app)
 const db = getFirestore(app);
-
+const storage = getStorage(app)
 
 
 const container = document.getElementById('root')
 const root = ReactDOMClient.createRoot(container)
 root.render(
     <firebaseContext.Provider
-        value={{ auth, db }}
+        value={{ auth, db, storage }}
     >
         <App />
     </firebaseContext.Provider>
