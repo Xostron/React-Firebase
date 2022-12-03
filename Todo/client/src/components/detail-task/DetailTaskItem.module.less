@@ -13,7 +13,7 @@
         height: auto;
     }
 
-    .file {
+    .inputFile {
         display: flex;
     }
 
@@ -40,6 +40,20 @@
         fill: @regular-text-color;
     }
 
+    .files {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        row-gap: 0;
+
+        .file {
+            display: flex;
+            width: auto;
+            height: auto;
+            border: 1px solid @normal-color;
+            cursor: pointer;
+        }
+    }
 
     .todo {
         .display-flex-column;

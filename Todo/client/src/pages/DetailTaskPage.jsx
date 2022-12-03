@@ -69,16 +69,24 @@ export const DetailTaskPage = () => {
     const downloadFile = async (e, idx) => {
         const pathReference = ref(storage, `${id}/${files[idx]}`)
 
-
-
         let url = await getDownloadURL(pathReference)
         console.log(url)
 
-        // let response = await fetch(url)
-        // let blob = await response.blob()
-        // let file = window.URL.createObjectURL(blob);
+        let response = await fetch(url)
+        let blob = await response.blob()
+        let file = window.URL.createObjectURL(new Blob([blob]));
         // window.location.assign(file);
-
+        const link = document.createElement('a');
+        link.href = url;
+        link.target = '_blank'
+        link.download = true
+        // link.setAttribute('download');
+        // 3. Append to html page
+        document.body.appendChild(link);
+        // 4. Force download
+        link.click();
+        // 5. Clean up and remove the link
+        link.parentNode.removeChild(link);
     }
     // ****************************API firebase*****************************
     // прочитать задачу

@@ -142,21 +142,20 @@ export const DetailTaskItem = ({ item }) => {
                 <MyTextarea props={propsTextareaInfo} />
             </div>
             <hr />
-            <span className={style.file}>
+            <span className={style.inputFile}>
                 <InputFile props={propsInputFile} />
-
             </span>
-            <div>
-                <ul>
-                    {files.items.map((val, idx) =>
-                        <li
-                            key={idx}
-                            onClick={(e) => files.downloadHandler(e, idx)}
-                        >
-                            <a>{val}</a>
-                        </li>
-                    )}
-                </ul>
+            <div className={style.files}>
+                {files.items.map((val, idx) =>
+                    <div
+                        className={style.file}
+                        key={idx}
+                        onClick={(e) => files.downloadHandler(e, idx)}
+                    >
+                        {val}
+                    </div>
+                )}
+
             </div>
             <hr />
             <div className={style.time}>
