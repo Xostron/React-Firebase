@@ -7,7 +7,7 @@ import { useEffect, useState, useContext } from "react"
 import { collection, addDoc, getDocs, serverTimestamp, orderBy, getDoc, where, query, updateDoc, doc, deleteDoc } from "firebase/firestore";
 import { firebaseContext } from ".."
 import { useSchedular } from "../hooks/useSchedular"
-import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, listAll, getDownloadURL, deleteObject } from "firebase/storage";
 
 export const DetailTaskPage = () => {
     const { state } = useLocation()
@@ -41,10 +41,14 @@ export const DetailTaskPage = () => {
         });
 
     }
-    const delFile = async (e) => {
-
+    const delFile = async (idx) => {
+        const delRef = ref(storage, `${id}/${files[idx]}`);
+        // Delete the file
+        await deleteObject(delRef)
+        getFiles()
     }
-    const getFiles = async (e) => {
+
+    const getFiles = async () => {
         const listRef = ref(storage, `${id}`);
         let arr = []
         // Find all the prefixes and items.
@@ -66,7 +70,8 @@ export const DetailTaskPage = () => {
             });
 
     }
-    const downloadFile = async (e, idx) => {
+
+    const downloadFile = async (idx) => {
         const pathReference = ref(storage, `${id}/${files[idx]}`)
 
         let url = await getDownloadURL(pathReference)
@@ -266,7 +271,7 @@ export const DetailTaskPage = () => {
         files: {
             items: files,
             downloadHandler: downloadFile,
-            deleteHandler: () => { },
+            deleteHandler: delFile,
             uploadHandler: uploadFile
         },
 

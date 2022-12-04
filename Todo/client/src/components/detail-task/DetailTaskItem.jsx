@@ -14,6 +14,7 @@ import iFile from '../../source/icons/bx-file.svg'
 import iAdd from '../../source/icons/bx-plus.svg'
 import style from './DetailTaskItem.module.less'
 import iBack from '../../source/icons/bx-x.svg'
+import { BtnFile } from "../UI/button/btn-dwnl-del-file/BtnFile";
 
 
 export const DetailTaskItem = ({ item }) => {
@@ -125,7 +126,14 @@ export const DetailTaskItem = ({ item }) => {
             blurHandlerTextarea: propsTodosItem.blurHandler
         }
     })
-
+    //props list files
+    const propsFiles = (item, idx) => ({
+        idx: idx,
+        name: item,
+        handler: () => files.downloadHandler(idx),
+        icon: iBack,
+        iconHandler: () => files.deleteHandler(idx)
+    })
     // обновление propsTodosItem
     useEffect(() => {
         propsTodosItem.todos && setPropsTodos(propsTodosItem.todos.map(callbackPropsTodos))
@@ -146,14 +154,15 @@ export const DetailTaskItem = ({ item }) => {
                 <InputFile props={propsInputFile} />
             </span>
             <div className={style.files}>
-                {files.items.map((val, idx) =>
-                    <div
-                        className={style.file}
-                        key={idx}
-                        onClick={(e) => files.downloadHandler(e, idx)}
-                    >
-                        {val}
-                    </div>
+                {files.items.map((item, idx) =>
+                    // <div
+                    //     className={style.file}
+                    //     key={idx}
+                    //     onClick={(e) => files.downloadHandler(e, idx)}
+                    // >
+                    //     {val}
+                    // </div>
+                    <BtnFile key={idx} props={propsFiles(item, idx)} />
                 )}
 
             </div>
