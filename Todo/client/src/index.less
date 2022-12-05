@@ -7,6 +7,11 @@ html {
   min-width: 343px;
   box-sizing: border-box;
   color: @regular-text-color;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 *,
@@ -17,11 +22,7 @@ html {
 
 /************ очистка стилей браузера по-умолчанию ***********/
 * {
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+
   margin: 0;
   padding: 0;
 }
@@ -97,4 +98,32 @@ hr {
   border: none;
   border-top: solid 1.5px;
   border-color: @navbar-icon-color;
+}
+
+.about {
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+h4 {
+  color: @regular-text-color;
+  padding: 8px 0px;
+}
+
+ul {
+  list-style-position: inside;
+}
+
+li {
+  color: @base-text-color;
+  line-height: 1.5rem;
+}
+
+a {
+  text-decoration: none;
+  color: #8d7f02;
+  font-weight: 500;
 }

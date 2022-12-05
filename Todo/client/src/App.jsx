@@ -16,21 +16,24 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Navbar />
+
       {loading ?
         <div>...Идет загрузка</div>
         :
-        <main>
-          {user ?
-            <Routes>
-              {PublicRoutes.map(({ path, element }) => <Route key={path} path={path} element={element} />)}
-            </Routes>
-            :
-            <Routes>
-              {PrivateRoutes.map(({ path, element }) => <Route key={path} path={path} element={element} />)}
-            </Routes>
-          }
-        </main>
+        <>
+          <Navbar />
+          <main>
+            {user ?
+              <Routes>
+                {PublicRoutes.map(({ path, element }) => <Route key={path} path={path} element={element} />)}
+              </Routes>
+              :
+              <Routes>
+                {PrivateRoutes.map(({ path, element }) => <Route key={path} path={path} element={element} />)}
+              </Routes>
+            }
+          </main>
+        </>
       }
     </BrowserRouter>
   )

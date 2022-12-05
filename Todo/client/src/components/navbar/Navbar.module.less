@@ -38,3 +38,35 @@
     .template-status;
     background-color: #e03c30;
 }
+
+
+.child {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    // background-color: aquamarine;
+    border-radius: 50%;
+
+    &:hover {
+        .tooltipUser {
+            opacity: 1;
+        }
+    }
+
+    .photoUser {
+        position: relative;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .tooltipUser {
+        position: absolute;
+        left: -150px;
+        opacity: 0;
+        color: #ffffff;
+    }
+
+}

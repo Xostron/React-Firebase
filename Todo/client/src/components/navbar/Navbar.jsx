@@ -30,15 +30,7 @@ export const Navbar = () => {
         const logout = await signOut(auth)
     }
 
-    // переход на страницы при авторизации/выход 
-    // useEffect(() => {
-    //     if (user) {
-    //         history('/tasks')
-    //     }
-    //     else {
-    //         history('/about')
-    //     }
-    // }, [user])
+    console.log(user)
 
     return (
         <div className={style.container}>
@@ -50,10 +42,15 @@ export const Navbar = () => {
             <div className={style.right}>
                 {user ?
                     <>
+                        <div className={style.child}>
+                            <img className={style.photoUser} src={user.photoURL} alt="photo User"></img>
+                            <div className={style.tooltipUser}>{user.displayName}</div>
+                        </div>
                         <BtnText onClick={logoutHandler}>
                             Выйти
                         </BtnText>
                         <div className={style.online}></div>
+
                     </>
                     :
                     <>
