@@ -28,12 +28,12 @@ export const AboutPage = () => {
                         Посмотреть код на GitHub
                     </a>
                 </li>
-                <li>
+                {/* <li>
                     <a
                         href="https://kanban-react-417bf.web.app" target="_blank" >
                         Посмотреть сайт
                     </a>
-                </li>
+                </li> */}
 
                 <h4 >Контактная информация</h4>
                 <li>
