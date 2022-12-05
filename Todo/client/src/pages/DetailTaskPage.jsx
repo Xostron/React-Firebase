@@ -240,6 +240,10 @@ export const DetailTaskPage = () => {
         // console.log('changeHandler = ', name)
         setTask({ ...task, [name]: !bool })
     }
+    const backTo = () => {
+        updTask()
+        history('/tasks')
+    }
     // todos
     const addTodoTask = () => {
         // console.log('add task', id)
@@ -276,7 +280,7 @@ export const DetailTaskPage = () => {
         },
 
         propsTitle: {
-            handler: () => { history('/tasks') },
+            handler: backTo,
             propsTextarea: {
                 value: task.title,
                 changeHandler: changeHandler,
