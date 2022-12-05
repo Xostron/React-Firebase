@@ -45,12 +45,11 @@
     align-items: center;
     gap: 1rem;
     position: relative;
-    // background-color: aquamarine;
     border-radius: 50%;
 
     &:hover {
         .tooltipUser {
-            opacity: 1;
+            color: #ece919;
         }
     }
 
@@ -63,10 +62,10 @@
     }
 
     .tooltipUser {
-        position: absolute;
-        left: -150px;
-        opacity: 0;
+        // position: absolute;
+        // left: -200px;
         color: #ffffff;
+        transition: color .4s ease-in-out;
     }
 
 }

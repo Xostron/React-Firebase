@@ -43,8 +43,8 @@ export const Navbar = () => {
                 {user ?
                     <>
                         <div className={style.child}>
+                            <div className={style.tooltipUser}>{user.email}</div>
                             <img className={style.photoUser} src={user.photoURL} alt="photo User"></img>
-                            <div className={style.tooltipUser}>{user.displayName}</div>
                         </div>
                         <BtnText onClick={logoutHandler}>
                             Выйти
